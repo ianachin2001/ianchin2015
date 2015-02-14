@@ -1,6 +1,9 @@
 package org.usfirst.frc.team3467.NewFinalBot.robot.commands;
 
+import java.util.TimerTask;
+
 import org.usfirst.frc.team3467.NewFinalBot.robot.Robot;
+import org.usfirst.frc.team3467.NewFinalBot.robot.subsystems.DriveBase;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -11,6 +14,8 @@ public class AutonomousCommand extends Command {
 	public boolean cornerFound = false;
 	boolean done = false;
 	int timesWaited = 0;
+	public int shortestDistance = 10000;
+	public double shortestPosition = 100;
     public AutonomousCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -19,7 +24,8 @@ public class AutonomousCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.drivebase.gyro.reset();
+    	//Robot.drivebase.gyro.reset();
+    	
     	Robot.drivebase.robotDrive.setSafetyEnabled(false);
     	//System.out.println("test");
     }
@@ -31,8 +37,7 @@ public class AutonomousCommand extends Command {
     	int times = 0;
     	
     	//int position = 1;
-    	int shortestDistance = 10000;
-    	double shortestPosition = 100;
+    	
     	
     	
     	//System.out.println("test");
@@ -50,22 +55,13 @@ public class AutonomousCommand extends Command {
 			//Robot.scanner.write();
 			System.out.println("finding corner");
 			cornerFound = false;
-			for(int index = 0; index < 100; index++){
-				System.out.println("distance= " + Robot.scanner.distanceArray[index] + "position= " + Robot.scanner.positionArray[index]);
-				if(Robot.scanner.distanceArray[index] <= Robot.scanner.distanceArray[index+1] && Robot.scanner.distanceArray[index] < shortestDistance){
-					if(Robot.scanner.distanceArray[index] != 0){
-						shortestDistance = Robot.scanner.distanceArray[index];
-						shortestPosition = Robot.scanner.positionArray[index];
-					}
-					//System.out.println(shortestPosition + " " + shortestDistance);
-				}
-			}
+			
     		if(shortestPosition > .5){
     			angleToTurn = 90 / (.5/(shortestPosition - .5));
     			System.out.println(angleToTurn + " 1st");
     		}
     		if(shortestPosition < .5){
-    			angleToTurn = 360 - 90 / (.5/(.5-shortestPosition));
+    			angleToTurn = 0 - 90 / (.5/(.5-shortestPosition));
     			System.out.println("Angle to turn: "  + angleToTurn + " Shortest position: " + shortestPosition);
     		}
     		if(shortestDistance > 5){

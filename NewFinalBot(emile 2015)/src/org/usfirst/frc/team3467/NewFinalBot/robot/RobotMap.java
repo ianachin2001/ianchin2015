@@ -35,9 +35,9 @@ public class RobotMap {
 		LiveWindow.addActuator("Robot Drive", "FrtLeftJag", (Jaguar) frontLeft);
 		rearLeft = new Jaguar(2);
 		LiveWindow.addActuator("Robot Drive", "FrtRightJag", (Jaguar) rearLeft);
-		frontRight= new Jaguar(0);
+		frontRight= new Jaguar(1);
 		LiveWindow.addActuator("Robot Drive", "RearLeftJag", (Jaguar) rearLeft);
-		rearRight = new Jaguar(1);
+		rearRight = new Jaguar(0);
 		LiveWindow.addActuator("Robot Drive", "RearRightJag", (Jaguar) rearRight);
 		robotdrive = new RobotDrive(rearLeft, frontLeft,rearRight,frontRight);
 		

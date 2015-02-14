@@ -68,6 +68,8 @@ public class Robot extends IterativeRobot {
         if (autonomousCommand != null) autonomousCommand.start();
         //autonomousCommand.stuff();
         System.out.println("Test1");
+        DriveBase.gyro.reset();
+        drivebase.updater.scheduleAtFixedRate(Robot.drivebase.turnUpdater, 100, 100);
     }
 
     /**
@@ -107,9 +109,8 @@ public class Robot extends IterativeRobot {
     public void teleopPeriodic() {
     	//System.out.println(scanner.getDistance());
         Scheduler.getInstance().run();
-    	drivebase.driveMecanum();
-    	
-    	
+      
+    	//System.out.println(Math.sin(.1));
     	
     }
     

@@ -67,10 +67,10 @@ public class LIDAR extends Subsystem implements PIDSource{
 	public void update() {
 		i2c.write(LIDAR_CONFIG_REGISTER, 0x04); // Initiate measurement
 		Timer.delay(0.04); // Delay for measurement to be taken
-		System.out.println("updating");
+		//System.out.println("updating");
 		i2c.read(LIDAR_DISTANCE_REGISTER, 2, distance); // Read in measurement
 		Timer.delay(0.02); // Delay to prevent over polling
-		System.out.println(getDistance());
+		//System.out.println(getDistance());
 	}
 	public void write(){
 		for(int index = 0; index < 100; index++){
@@ -122,10 +122,11 @@ public class LIDAR extends Subsystem implements PIDSource{
 			//update();
 			if(Robot.autonomousCommand.cornerFound||times == 0){
 				times = 1;
-				scanDone = false;
+				//scanDone = false;
 				//System.out.println("stuff2");
 				//boolean firstHit = true;
-				
+				/*int shortestDistance = 1000000;
+				double shortestPosition = -1;*/
 				if(state == 1){
 					position = 1;
 					for(int index = 0; index < 100; index++){
@@ -138,9 +139,9 @@ public class LIDAR extends Subsystem implements PIDSource{
 						position = position - .01;
 					}
 					state = 2;
-					scanDone = true;
+					//scanDone = true;
 					write();
-					return;
+					//return;
 				}
 				if(state ==2){
 					position = 0;
@@ -154,11 +155,22 @@ public class LIDAR extends Subsystem implements PIDSource{
 						position = position + .01;
 					}
 					state = 1;
-					scanDone = true;
+					//scanDone = true;
 					write();
-					return;
+					//return;
 				}
-				
+				for(int index = 0; index < 100; index++){
+					System.out.println("distance= " + Robot.scanner.distanceArray[index] + "position= " + Robot.scanner.positionArray[index]);
+					if(Robot.scanner.distanceArray[index] <= Robot.scanner.distanceArray[index+1] && Robot.scanner.distanceArray[index] < Robot.autonomousCommand.shortestDistance){
+						if(Robot.scanner.distanceArray[index] != 0){
+							Robot.autonomousCommand.shortestDistance = Robot.scanner.distanceArray[index];
+							Robot.autonomousCommand.shortestPosition = Robot.scanner.positionArray[index];
+						}
+						//System.out.println(shortestPosition + " " + shortestDistance);
+					}
+				}
+				scanDone = true;
+				return;
 			}
 		}
 
